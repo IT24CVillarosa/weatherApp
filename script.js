@@ -1,24 +1,156 @@
-const apiKey = 'bea8ecca931835278480578bba62d4a1';
-const newsApiKey = 'YOUR_NEWS_API_KEY';
+const apiKey = 'bea8ecca931835278480578bba62d4a1'; // Replace with your API key
 let unit = 'metric';
 let currentCity = '';
+let favorites = [];
 
-document.getElementById('search-button').addEventListener('click', () => {
-  const city = document.getElementById('city-input').value;
-  if (city) {
-    fetchWeather(city);
-    fetchCurrentWeather(city);
+// Load favorites from local storage
+function loadFavorites() {
+  const storedFavorites = localStorage.getItem('weatherFavorites');
+  favorites = storedFavorites ? JSON.parse(storedFavorites) : [];
+  updateFavoritesDisplay();
+}
+
+// Save favorites to local storage
+function saveFavorites() {
+  localStorage.setItem('weatherFavorites', JSON.stringify(favorites));
+  updateFavoritesDisplay();
+}
+
+// Update favorites display
+function updateFavoritesDisplay() {
+  const favoritesContainer = document.getElementById('favorites');
+  favoritesContainer.innerHTML = '<h2>Favorites</h2>';
+  
+  favorites.forEach(city => {
+    const favButton = document.createElement('button');
+    favButton.textContent = city;
+    favButton.addEventListener('click', () => {
+      fetchWeather(city);
+      fetchCurrentWeather(city);
+    });
+
+    const removeButton = document.createElement('button');
+    removeButton.textContent = '✖';
+    removeButton.className = 'remove-favorite';
+    removeButton.addEventListener('click', (e) => {
+      e.stopPropagation();
+      favorites = favorites.filter(fav => fav !== city);
+      saveFavorites();
+    });
+
+    const cityContainer = document.createElement('div');
+    cityContainer.className = 'favorite-city';
+    cityContainer.appendChild(favButton);
+    cityContainer.appendChild(removeButton);
+
+    favoritesContainer.appendChild(cityContainer);
+  });
+}
+
+// Add to favorites
+function addToFavorites(city) {
+  if (!favorites.includes(city)) {
+    favorites.push(city);
+    saveFavorites();
   }
-});
+}
 
-document.getElementById('unit-toggle').addEventListener('click', () => {
-  unit = unit === 'metric' ? 'imperial' : 'metric';
-  if (currentCity) {
-    fetchWeather(currentCity);
-    fetchCurrentWeather(currentCity);
-  }
-});
+// Weather image selection
+function getWeatherImage(weatherCondition) {
+  const weatherImages = {
+    'Clear': 'images/clear-sky.png',
+    'Clouds': 'images/cloud.png',
+    'Rain': 'images/rainy.jpg',
+    'Snow': 'images/snowy.jpg',
+    'Thunderstorm': 'images/thunderstorm.jpg',
+    'Drizzle': 'images/drizzle.jpg',
+    'Mist': 'images/misty.jpg',
+    'default': 'images/default-weather.png'
+  };
 
+  return weatherImages[weatherCondition] || weatherImages['default'];
+}
+
+// Display current weather
+function displayCurrentWeather(data) {
+  const container = document.getElementById('current-weather');
+  const weatherCondition = data.weather[0].main; // Main weather condition
+  const weatherImage = getWeatherImage(weatherCondition); // Get corresponding image
+
+  container.innerHTML = `
+    <h2>Current Weather in ${data.name}</h2>
+    <img 
+        id="weather-image" 
+        class="weather-image"
+        src="${weatherImage}" 
+        alt="${weatherCondition}">
+    <p>Temperature: ${data.main.temp.toFixed(1)}°${unit === 'metric' ? 'C' : 'F'}</p>
+    <p>Feels Like: ${data.main.feels_like.toFixed(1)}°${unit === 'metric' ? 'C' : 'F'}</p>
+    <p>Humidity: ${data.main.humidity}%</p>
+    <p>Wind Speed: ${data.wind.speed} ${unit === 'metric' ? 'm/s' : 'mph'}</p>
+  `;
+}
+
+// Display forecast
+function displayWeather(data) {
+  const container = document.getElementById('weather-container');
+  container.innerHTML = '';
+
+  const dailyForecasts = {};
+  data.list.forEach(entry => {
+    const date = new Date(entry.dt_txt).toDateString();
+    if (!dailyForecasts[date]) dailyForecasts[date] = [];
+    dailyForecasts[date].push(entry);
+  });
+
+  Object.keys(dailyForecasts).slice(0, 7).forEach(date => {
+    const dayForecast = dailyForecasts[date];
+    const avgTemp = dayForecast.reduce((sum, item) => sum + item.main.temp, 0) / dayForecast.length;
+
+    const mainWeather = dayForecast[0].weather[0].main; // Use the first entry's weather condition
+    const weatherImage = getWeatherImage(mainWeather); // Get image for weather condition
+
+    const card = document.createElement('div');
+    card.className = 'weather-card';
+
+    // Hourly data
+    const hourlyData = displayHourlyForecast(dayForecast);
+
+    card.innerHTML = `
+      <img src="${weatherImage}" alt="${mainWeather}" class="weather-image">
+      <h3>${date}</h3>
+      <p>Avg Temp: ${avgTemp.toFixed(1)}°${unit === 'metric' ? 'C' : 'F'}</p>
+      <p>Weather: ${mainWeather}</p>
+    `;
+
+    card.appendChild(hourlyData);
+    container.appendChild(card);
+  });
+}
+
+// Display hourly forecast
+function displayHourlyForecast(forecast) {
+  const container = document.createElement('div');
+  container.className = 'hourly-container';
+
+  forecast.forEach(entry => {
+    const time = new Date(entry.dt_txt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    const weatherCondition = entry.weather[0].main;
+    const weatherImage = getWeatherImage(weatherCondition);
+
+    container.innerHTML += `
+      <div class="hourly-card">
+        <img src="${weatherImage}" alt="${weatherCondition}" class="hourly-weather-image">
+        <p>${time}</p>
+        <p>${entry.main.temp.toFixed(1)}°${unit === 'metric' ? 'C' : 'F'}</p>
+      </div>
+    `;
+  });
+
+  return container;
+}
+
+// Fetch weather data
 async function fetchWeather(city) {
   currentCity = city;
   const apiUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&units=${unit}&appid=${apiKey}`;
@@ -43,58 +175,31 @@ async function fetchCurrentWeather(city) {
   }
 }
 
-function displayWeather(data) {
-  const container = document.getElementById('weather-container');
-  container.innerHTML = '';
-  const dailyForecasts = {};
-  data.list.forEach(entry => {
-    const date = new Date(entry.dt_txt).toDateString();
-    if (!dailyForecasts[date]) dailyForecasts[date] = [];
-    dailyForecasts[date].push(entry);
-  });
+// Initialize favorites and search events
+document.getElementById('search-button').addEventListener('click', () => {
+  const city = document.getElementById('city-input').value;
+  if (city) {
+    fetchWeather(city);
+    fetchCurrentWeather(city);
+  }
+});
 
-  Object.keys(dailyForecasts).slice(0, 7).forEach(date => {
-    const dayForecast = dailyForecasts[date];
-    const avgTemp = dayForecast.reduce((sum, item) => sum + item.main.temp, 0) / dayForecast.length;
-    const card = document.createElement('div');
-    card.className = 'weather-card';
+document.getElementById('unit-toggle').addEventListener('click', () => {
+  unit = unit === 'metric' ? 'imperial' : 'metric';
+  if (currentCity) {
+    fetchWeather(currentCity);
+    fetchCurrentWeather(currentCity);
+  }
+});
 
-    const hourlyData = displayHourlyForecast(dayForecast);
+document.getElementById('add-favorite').addEventListener('click', () => {
+  if (currentCity) {
+    addToFavorites(currentCity);
+  }
+});
 
-    card.innerHTML = `
-      <h3>${date}</h3>
-      <p>Avg Temp: ${avgTemp.toFixed(1)}°${unit === 'metric' ? 'C' : 'F'}</p>
-    `;
-    card.appendChild(hourlyData);
-    container.appendChild(card);
-  });
-}
-
-function displayCurrentWeather(data) {
-  const container = document.getElementById('current-weather');
-  container.innerHTML = `
-    <h2>Current Weather in ${data.name}</h2>
-    <p>Temperature: ${data.main.temp.toFixed(1)}°${unit === 'metric' ? 'C' : 'F'}</p>
-    <p>Feels Like: ${data.main.feels_like.toFixed(1)}°${unit === 'metric' ? 'C' : 'F'}</p>
-    <p>Humidity: ${data.main.humidity}%</p>
-    <p>Wind Speed: ${data.wind.speed} ${unit === 'metric' ? 'm/s' : 'mph'}</p>
-  `;
-}
-
-function displayHourlyForecast(forecast) {
-  const container = document.createElement('div');
-  container.className = 'hourly-container';
-  forecast.forEach(entry => {
-    const time = new Date(entry.dt_txt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-    container.innerHTML += `
-      <div class="hourly-card">
-        <p>${time}</p>
-        <p>${entry.main.temp.toFixed(1)}°${unit === 'metric' ? 'C' : 'F'}</p>
-      </div>
-    `;
-  });
-  return container;
-}
+// Load favorites on page load
+loadFavorites();
 
 function displayMap(lat, lon) {
   const map = L.map('map').setView([lat, lon], 10);

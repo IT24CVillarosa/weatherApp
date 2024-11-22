@@ -1,204 +1,242 @@
 /* General Styles */
 body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #1e293b;
-    background-size: cover;
-    color: #fff;
-    animation: fadeIn 1.5s ease-in-out;
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #1e293b;
+  background-size: cover;
+  color: #fff;
+  animation: fadeIn 1.5s ease-in-out;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
   }
-  
-  /* Animations */
-  @keyframes fadeIn {
-    from {
-      opacity: 0;
-    }
-    to {
-      opacity: 1;
-    }
+  to {
+    opacity: 1;
   }
-  
-  @keyframes slideUp {
-    from {
-      transform: translateY(20px);
-      opacity: 0;
-    }
-    to {
-      transform: translateY(0);
-      opacity: 1;
-    }
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
   }
-  
-  /* Dashboard Container */
-  .dashboard {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
+  to {
+    transform: translateY(0);
+    opacity: 1;
   }
-  
-  /* Header Styles */
-  header {
-    text-align: center;
-  }
-  
-  header h1 {
-    font-size: 2.5rem;
-    color: #00d4ff;
-    animation: slideUp 1s ease-in-out;
-  }
-  
-  .search-bar {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    margin: 20px 0;
-  }
-  
-  #city-input {
-    padding: 10px;
-    width: 50%;
-    border-radius: 5px;
-    border: none;
-    outline: none;
-    transition: box-shadow 0.3s ease;
-  }
-  
-  #city-input:focus {
-    box-shadow: 0 0 10px #00d4ff;
-  }
-  
-  #search-button,
-  #unit-toggle {
-    padding: 10px 15px;
-    background-color: #00d4ff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-  }
-  
-  #search-button:hover,
-  #unit-toggle:hover {
-    background-color: #00aaff;
-    transform: scale(1.1);
-  }
-  
-  .suggestions {
-    list-style: none;
-    padding: 0;
-    text-align: center;
-    animation: slideUp 1.2s ease-in-out;
-  }
-  
-  .suggestions li {
-    padding: 5px;
-    cursor: pointer;
-    color: #00d4ff;
-    transition: color 0.3s ease;
-  }
-  
-  .suggestions li:hover {
-    color: #00aaff;
-  }
-  
-  /* Current Weather */
-  .current-weather {
-    background: rgba(0, 0, 0, 0.5);
-    padding: 20px;
-    border-radius: 10px;
-    margin-bottom: 20px;
-    text-align: left;
-    animation: fadeIn 1s ease-in-out;
-  }
-  
-  /* Weather Container */
-  .weather-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 20px;
-  }
-  
-  .weather-card {
-    background-color: #2d3a4b;
-    border-radius: 10px;
-    padding: 15px;
-    text-align: center;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.4);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-  }
-  
-  .weather-card:hover {
-    transform: translateY(-10px);
-    box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.6);
-  }
-  
-  .hourly-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-    gap: 10px;
-    margin-top: 10px;
-  }
-  
-  .hourly-card {
-    background-color: rgba(0, 0, 0, 0.2);
-    padding: 5px;
-    border-radius: 5px;
-    text-align: center;
-    transition: transform 0.3s ease, background-color 0.3s ease;
-  }
-  
-  .hourly-card:hover {
-    transform: scale(1.1);
-    background-color: rgba(0, 0, 0, 0.4);
-  }
-  
-  /* Map */
-  .map {
-    height: 300px;
-    margin-top: 20px;
-    border-radius: 10px;
-    animation: fadeIn 1.5s ease-in-out;
-  }
-  
-  /* Favorites */
-  .favorites {
-    margin-top: 20px;
-  }
-  
-  .favorites button {
-    margin: 5px;
-    padding: 10px;
-    background-color: #00d4ff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-  }
-  
-  .favorites button:hover {
-    background-color: #00aaff;
-    transform: scale(1.1);
-  }
-  
-  /* News */
-  .news {
-    margin-top: 20px;
-    animation: fadeIn 2s ease-in-out;
-  }
-  
-  .news-item {
-    margin-bottom: 10px;
-    transition: transform 0.3s ease, color 0.3s ease;
-  }
-  
-  .news-item a {
-    text-decoration: none;
-    color: #00d4ff;
-  }
-  
-  .news-item a:hover {
-    color: #00aaff;
-    transform: scale(1.05);
-  }
-  
+}
+
+/* Dashboard Container */
+.dashboard {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* Header Styles */
+header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+header h1 {
+  font-size: 2.5rem;
+  color: #00d4ff;
+  animation: slideUp 1s ease-in-out;
+}
+
+.search-bar {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin: 20px 0;
+}
+
+#city-input {
+  padding: 10px;
+  width: 50%;
+  border-radius: 5px;
+  border: none;
+  outline: none;
+  transition: box-shadow 0.3s ease;
+}
+
+#city-input:focus {
+  box-shadow: 0 0 10px #00d4ff;
+}
+
+button {
+  padding: 10px 15px;
+  background-color: #00d4ff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+button:hover {
+  background-color: #00aaff;
+  transform: scale(1.1);
+}
+
+#add-favorite {
+  background-color: #4caf50;
+  color: white;
+}
+
+#add-favorite:hover {
+  background-color: #45a049;
+}
+
+/* Suggestions */
+.suggestions {
+  list-style: none;
+  padding: 0;
+  text-align: center;
+  animation: slideUp 1.2s ease-in-out;
+}
+
+.suggestions li {
+  padding: 5px;
+  cursor: pointer;
+  color: #00d4ff;
+  transition: color 0.3s ease;
+}
+
+.suggestions li:hover {
+  color: #00aaff;
+}
+
+/* Current Weather */
+.current-weather {
+  background: rgba(0, 0, 0, 0.5);
+  padding: 20px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  text-align: left;
+  animation: fadeIn 1s ease-in-out;
+}
+
+/* Weather Container */
+.weather-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+.weather-card {
+  background-color: #2d3a4b;
+  border-radius: 10px;
+  padding: 15px;
+  text-align: center;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.4);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.weather-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.6);
+}
+
+/* Weather Images */
+.weather-image {
+  width: 90%; /* Limits the width to 90% of the container */
+  max-width: 200px; /* Ensures the image doesn’t grow too large */
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 10px;
+  height: auto; /* Keeps the aspect ratio intact */
+  display: block;
+  margin: 0 auto; /* Centers the image */
+}
+
+
+/* Hourly Forecast */
+.hourly-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.hourly-card {
+  background-color: rgba(0, 0, 0, 0.2);
+  padding: 5px;
+  border-radius: 5px;
+  text-align: center;
+  transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+.hourly-card:hover {
+  transform: scale(1.1);
+  background-color: rgba(0, 0, 0, 0.4);
+}
+.hourly-weather-image {
+  width: 60px; /* Limits the width of the image */
+  height: 60px; /* Ensures the image has a uniform size */
+  object-fit: cover; /* Keeps the aspect ratio intact */
+  border-radius: 5px; /* Adds a subtle rounding to the image */
+  margin-bottom: 5px; /* Adds space between the image and the text */
+}
+
+/* Map */
+.map {
+  height: 300px;
+  margin-top: 20px;
+  border-radius: 10px;
+  animation: fadeIn 1.5s ease-in-out;
+}
+
+/* Favorites Section */
+.favorites {
+  margin-top: 20px;
+}
+
+.favorite-city {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.favorite-city button {
+  margin-right: 5px;
+}
+
+.remove-favorite {
+  background-color: #ff4444;
+  color: white;
+  border: none;
+  border-radius: 3px;
+  padding: 5px;
+  font-size: 0.8em;
+}
+
+.favorites button:hover {
+  background-color: #ff2222;
+  transform: scale(1.1);
+}
+
+/* News Section */
+.news {
+  margin-top: 20px;
+  animation: fadeIn 2s ease-in-out;
+}
+
+.news-item {
+  margin-bottom: 10px;
+  transition: transform 0.3s ease, color 0.3s ease;
+}
+
+.news-item a {
+  text-decoration: none;
+  color: #00d4ff;
+}
+
+.news-item a:hover {
+  color: #00aaff;
+  transform: scale(1.05);
+}

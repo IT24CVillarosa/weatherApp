@@ -1,36 +1,44 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Weather Dashboard</title>
-  <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <meta charset="UTF-8">
+    <title>Weather Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
 </head>
 <body>
-  <div class="dashboard">
-    <header>
-      <h1>Weather Dashboard</h1>
-      <div class="search-bar">
-        <input type="text" id="city-input" placeholder="Enter a city..." oninput="fetchSuggestions(this.value)">
-        <button id="search-button">Search</button>
-        <button id="unit-toggle">°C / °F</button>
+    <div class="dashboard">
+        <header>
+            <h1>Weather Dashboard</h1>
+        </header>
+
+        <div class="search-bar">
+            <input type="text" id="city-input" placeholder="Enter city name">
+            <button id="search-button">Search</button>
+            <button id="unit-toggle">°C / °F</button>
+            <button id="add-favorite">Add to Favorites</button>
+        </div>
+        <ul id="suggestions" class="suggestions"></ul>
+
+        <div id="current-weather" class="current-weather"></div>
+
+        <div id="weather-container" class="weather-container">
+          <img id="weather-image" class="weather-image" src="images/default-weather.png" alt="Weather Image">
       </div>
-      <ul id="suggestions" class="suggestions"></ul>
-    </header>
-    <main>
-      <div id="current-weather" class="current-weather"></div>
-      <div id="weather-container" class="weather-container"></div>
-      <div id="map" class="map"></div>
-      <div id="favorites" class="favorites">
-        <h2>Favorite Cities</h2>
-      </div>
-      <div id="news" class="news">
-        <h2>Weather News and Tips</h2>
-      </div>
-    </main>
-  </div>
-  <script src="script.js"></script>
+      
+
+        <div id="map" class="map"></div>
+
+        <div id="favorites" class="favorites">
+            <h2>Favorite Cities</h2>
+        </div>
+
+        <div id="news" class="news">
+            <h2>Weather News and Tips</h2>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
 </body>
 </html>
